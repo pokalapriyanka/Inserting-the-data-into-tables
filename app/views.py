@@ -62,10 +62,28 @@ def display_webpages(request):
     QLWO=Webpage.objects.all().order_by('name')[:10:]
     QLWO=Webpage.objects.all().order_by(Length('topic_name').desc())
     QLWO=Webpage.objects.all().order_by('name')[2:6:]
+    QLWO=Webpage.objects.all()
+    QLWO=Webpage.objects.filter(name__startswith='r')
+    QLWO=Webpage.objects.filter(name__endswith='t')
+    QLWO=Webpage.objects.filter(name__contains='a')
+    QLWO=Webpage.objects.filter(name__in=['rohit'])
+    QLWO=Webpage.objects.filter(name__in=['rohit','virat'])
     d={'QLWO':QLWO}
     return render(request,'display_webpages.html',d)
 
 def display_accessrecord(request):
     QLAO=AccessRecord.objects.all()
+    QLAO=AccessRecord.objects.filter(date__year='2024')
+    QLAO=AccessRecord.objects.filter(date__month='5')
+    QLAO=AccessRecord.objects.filter(date__day='11')
+    QLAO=AccessRecord.objects.filter(date__year__gt='2023')
+    QLAO=AccessRecord.objects.filter(date__year__gte='2023')
+    QLAO=AccessRecord.objects.filter(date__year__lt='2024')
+    QLAO=AccessRecord.objects.filter(date__year__lte='2024')
+    QLAO=AccessRecord.objects.filter(date__month__gte='5')
+    QLAO=AccessRecord.objects.filter(date__day__lt='12')
+    QLAO=AccessRecord.objects.filter(date__day__gt='10')
+    QLAO=AccessRecord.objects.filter(date__month__lt='10')
+    QLAO=AccessRecord.objects.filter(date__month__lte='5')
     d={'QLAO':QLAO}
     return render(request,'display_accessrecord.html',d)
