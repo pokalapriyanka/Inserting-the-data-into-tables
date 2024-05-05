@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from app.models import *
 from django.db.models.functions import Length
+from django.db.models import Q
 
 def insert_topic(request):
     tn=input('enter topicname')
@@ -31,8 +32,6 @@ def insert_webpage(request):
         return render(request,'display_webpages.html',d)
     
 def insert_access(request):
-    
-
     i=int(input('enter id of webpage objects'))
     d=input('enter date')
     a=input('enter author')
@@ -41,9 +40,6 @@ def insert_access(request):
     AO.save()
     d={'QLAO':AccessRecord.objects.all()}
     return render(request,'display_accessrecord.html',d)
-
-
-
 
 
 def display_topics(request):
@@ -68,6 +64,14 @@ def display_webpages(request):
     QLWO=Webpage.objects.filter(name__contains='a')
     QLWO=Webpage.objects.filter(name__in=['rohit'])
     QLWO=Webpage.objects.filter(name__in=['rohit','virat'])
+    QLWO=Webpage.objects.filter(topic_name='Cricket',name__startswith='r')
+    QLWO=Webpage.objects.filter(Q(topic_name='Rugby') | Q(url__endswith='in'))
+    QLWO=Webpage.objects.filter(name__endswith='t',url__endswith='in')
+    QLWO=Webpage.objects.filter(Q(name__startswith='r') & Q(name__endswith='t'))
+    QLWO=Webpage.objects.filter(email__isnull=False)
+    QLWO=Webpage.objects.filter(name__startswith='r',name__endswith='t')
+    QLWO=Webpage.objects.filter(Q(topic_name='Cricket') | Q(name__startswith='r') & Q(name__endswith='t'))
+
     d={'QLWO':QLWO}
     return render(request,'display_webpages.html',d)
 
@@ -85,5 +89,11 @@ def display_accessrecord(request):
     QLAO=AccessRecord.objects.filter(date__day__gt='10')
     QLAO=AccessRecord.objects.filter(date__month__lt='10')
     QLAO=AccessRecord.objects.filter(date__month__lte='5')
+    QLAO=AccessRecord.objects.filter(Q(name=1) | Q(date__year__gt='2023'))
+    QLAO=AccessRecord.objects.filter(Q(author__startswith='N')| Q(author__endswith='l'))
+    QLAO=AccessRecord.objects.filter(date__year__lte='2024',date__year__gt='2015')
+    QLAO=AccessRecord.objects.filter(author__isnull=False)
     d={'QLAO':QLAO}
     return render(request,'display_accessrecord.html',d)
+
+
